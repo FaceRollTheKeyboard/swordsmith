@@ -40,7 +40,8 @@ function createScene() {
     // 设置相机的位置
     camera.position.x = 0;
     camera.position.z = 200;
-    camera.position.y = 100;
+    camera.position.y = 200;
+    // camera.lookAt(player)
 
     // 创建渲染器
     renderer = new THREE.WebGLRenderer({

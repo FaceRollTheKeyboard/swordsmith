@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>飞行者</title>
+    <title>swordsmith</title>
     <script src="three.js"></script>
     <style>
         body{
@@ -26,6 +26,7 @@
 <script src="./object/ground.js"></script>
 <script src="./object/player.js"></script>
 <script src="./object/sword.js"></script>
+<script src="./object/target.js"></script>
 <script>
     //定义色彩
     var Colors = {
@@ -45,11 +46,13 @@
         // 添加对象
         createPlayer();
         createGround();
+        createTarget()
 
         renderer.render(scene, camera);
 
         //添加监听器
         document.addEventListener('mousemove', handleMouseMove, false);
+        document.addEventListener('click',handleMouseClick,false)
 
         // 调用循环函数，在每帧更新对象的位置和渲染场景
         loop();
@@ -63,7 +66,14 @@
 //        updatePlane();
 //        airplane.pilot.updateHairs();
 //
-//        renderer.render(scene, camera);
+        camera.position.x=player.mesh.position.x
+        camera.position.z=player.mesh.position.z+200
+        camera.lookAt({
+            x:player.mesh.position.x,
+            y:player.mesh.position.y,
+            z:player.mesh.position.z+20
+        })
+        renderer.render(scene, camera);
         requestAnimationFrame(loop);
     }
 //
@@ -95,18 +105,57 @@
 
     // mousemove 事件处理函数
 
-    function handleMouseMove(event) {
+    function handleMouseMove(e) {
 
-        // 这里我把接收到的鼠标位置的值转换成归一化值，在-1与1之间变化
-        // 这是x轴的公式:
+        //获取目标位置
+        console.log(e)
+        //将鼠标点击位置的屏幕坐标转成threejs中的标准坐标
+        mouse.x = (e.clientX/window.innerWidth)*2 -1;
+        mouse.y = -(e.clientY/window.innerHeight)*2 + 1;
+        //从相机发射一条射线，经过鼠标点击位置
+        raycaster.setFromCamera(mouse,camera);
+        //计算射线相机到的对象，可能有多个对象，因此返回的是一个数组，按离相机远近排列
+        var intersects = raycaster.intersectObjects(scene.children);
 
-        var tx = -1 + (event.clientX / WIDTH)*2;
+        ForEach(intersects,function (el, i) {
+            if(el.object.name='ground'){
+                console.log(el)
+                target.mesh.position.set(el.point.x,el.point.y,el.point.z)
+            }
+        })
 
-        // 对于 y 轴，我们需要一个逆公式
-        // 因为 2D 的 y 轴与 3D 的 y 轴方向相反
+    }
 
-        var ty = 1 - (event.clientY / HEIGHT)*2;
-        mousePos = {x:tx, y:ty};
+    var raycaster=new THREE.Raycaster();
+    var mouse=new THREE.Vector2();
+    function handleMouseClick(e) {
+
+    }
+
+    //遍历数组和对象
+    /*
+     * for each 语句，
+     * 实现for 和for(var i in y)的功能
+     * 调用时
+     ForEach(obj,function(i){
+     })
+     * */
+    function ForEach(obj, func) {
+        if (typeof obj == "object") {
+            if (obj.length == undefined) {
+                for (var x in obj) {
+                    //传入（每一项，每一项的序列号）
+                    func(obj[x], x);
+                }
+            } else {
+                for (var i = 0; i < obj.length; i++) {
+                    //传入（每一项，每一项的序列号）
+                    func(obj[i], i);
+                }
+            }
+        } else {
+            console.log('类型错误:' + JSON.stringify(obj))
+        }
     }
 
 </script>

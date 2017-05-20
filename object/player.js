@@ -16,6 +16,7 @@ var playerAndSword=function () {
 var player;
 function createPlayer(){
     player=new playerAndSword();
-    player.mesh.position.y=10
+    player.mesh.position.y=5
+    player.mesh.name='player'
     scene.add(player.mesh)
 }

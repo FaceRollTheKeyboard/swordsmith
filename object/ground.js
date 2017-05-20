@@ -18,5 +18,6 @@ var ground;
 function createGround(){
     ground=new Ground();
     ground.mesh.position.y=-500
+    ground.mesh.name='ground'
     scene.add(ground.mesh)
 }
