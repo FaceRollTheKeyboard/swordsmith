@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>swordsmith</title>
     <script src="three.js"></script>
+    <script src="physi.js"></script>
+    <script src="stats.js"></script>
+    <script src="tween.js"></script>
     <style>
         body{
             padding:0px;
@@ -37,10 +40,31 @@
         brownDark:0x23190f,
         blue:0x68c3c0
     };
+    var physics_stats,render_stats,loader
 
     function init() {
+        TWEEN.start()
+        Physijs.scripts.worker = './physijs_worker.js';
+        Physijs.scripts.ammo = './ammo.js';
+
+
+        //设置物理监控
+        render_stats = new Stats();
+        render_stats.domElement.style.position = 'absolute';
+        render_stats.domElement.style.top = '1px';
+        render_stats.domElement.style.zIndex = 100;
+        document.getElementById( 'world' ).appendChild( render_stats.domElement );
+
+        physics_stats = new Stats();
+        physics_stats.domElement.style.position = 'absolute';
+        physics_stats.domElement.style.top = '50px';
+        physics_stats.domElement.style.zIndex = 100;
+        document.getElementById( 'world' ).appendChild( physics_stats.domElement );
+
         // 创建场景，相机和渲染器
         createScene();
+
+        loader = new THREE.TextureLoader();
         // 添加光源
         createLights();
         // 添加对象
@@ -55,7 +79,7 @@
         document.addEventListener('click',handleMouseClick,false)
 
         // 调用循环函数，在每帧更新对象的位置和渲染场景
-        loop();
+        requestAnimationFrame(loop);
     }
 
     function loop(){
@@ -66,6 +90,8 @@
 //        updatePlane();
 //        airplane.pilot.updateHairs();
 //
+
+        scene.simulate();
         camera.position.x=player.mesh.position.x
         camera.position.z=player.mesh.position.z+200
         camera.lookAt({
@@ -74,7 +100,11 @@
             z:player.mesh.position.z+20
         })
         renderer.render(scene, camera);
+        render_stats.update()
+        physics_stats.update();
+
         requestAnimationFrame(loop);
+
     }
 //
 //    function updatePlane(){
@@ -107,6 +137,13 @@
 
     function handleMouseMove(e) {
 
+
+
+    }
+
+    var raycaster=new THREE.Raycaster();
+    var mouse=new THREE.Vector2();
+    function handleMouseClick(e) {
         //获取目标位置
         console.log(e)
         //将鼠标点击位置的屏幕坐标转成threejs中的标准坐标
@@ -123,13 +160,6 @@
                 target.mesh.position.set(el.point.x,el.point.y,el.point.z)
             }
         })
-
-    }
-
-    var raycaster=new THREE.Raycaster();
-    var mouse=new THREE.Vector2();
-    function handleMouseClick(e) {
-
     }
 
     //遍历数组和对象
@@ -157,6 +187,19 @@
             console.log('类型错误:' + JSON.stringify(obj))
         }
     }
+
+    applyForce = function() {
+        if (!mouse_position) return;
+        var strength = 35, distance, effect, offset, box;
+
+        for ( var i = 0; i < boxes.length; i++ ) {
+            box = boxes[i];
+            distance = mouse_position.distanceTo( box.position ),
+                effect = mouse_position.clone().sub( box.position ).normalize().multiplyScalar( strength / distance ).negate(),
+                offset = mouse_position.clone().sub( box.position );
+            box.applyImpulse( effect, offset );
+        }
+    };
 
 </script>
 

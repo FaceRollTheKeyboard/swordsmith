@@ -13,10 +13,21 @@ function createScene() {
     WIDTH = window.innerWidth;
 
     // 创建场景
-    scene = new THREE.Scene();
+    scene = new Physijs.Scene({ fixedTimeStep: 1 / 120 });
+
+    //设置场景重力
+    scene.setGravity(new THREE.Vector3(0,-100,0))
 
     // 在场景中添加雾的效果；样式上使用和背景一样的颜色
     scene.fog = new THREE.Fog(0xf7d9aa, 100, 950);
+    scene.addEventListener(
+        'update',
+        function() {
+            scene.simulate( undefined, 2 );
+            physics_stats.update();
+        }
+    );
+
 
     // 创建相机
     aspectRatio = WIDTH / HEIGHT;

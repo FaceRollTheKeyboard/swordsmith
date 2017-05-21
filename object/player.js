@@ -5,18 +5,26 @@ var playerAndSword=function () {
     this.mesh=new THREE.Object3D()
 
     //创建身体
-    var geomBody=new THREE.BoxGeometry(10,10,10,1,1,1)
-    var matBody=new THREE.MeshPhongMaterial({color:Colors.red,shading:THREE.FlatShading})
-    var body=new THREE.Mesh(geomBody,matBody)
-    body.castShadow=true
-    body.receiveShadow=true
-    this.mesh.add(body)
+    var geomBody=new THREE.CubeGeometry(10,10,10)
+    var matBody=new Physijs.createMaterial(
+        new THREE.MeshPhongMaterial({
+            color:Colors.red,
+            shading:THREE.FlatShading,
+
+        }),
+        0.5,
+        1
+    )
+
+    this.mesh=new Physijs.BoxMesh(geomBody,matBody,1)
+    this.mesh.castShadow=true
+    this.mesh.receiveShadow=true
 }
 
 var player;
 function createPlayer(){
     player=new playerAndSword();
-    player.mesh.position.y=5
+    player.mesh.position.y=100
     player.mesh.name='player'
     scene.add(player.mesh)
 }

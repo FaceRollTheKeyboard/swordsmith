@@ -3,14 +3,17 @@
  * 地面构建逻辑
  */
 var Ground=function () {
-    var geom=new THREE.BoxGeometry(1000,1000,1000,1,1,1)
-    var mat=new THREE.MeshPhongMaterial({
-        color:Colors.blue,
-        transparent:true,
-        opacity:.6,
-        shading:THREE.FlatShading
-    })
-    this.mesh=new THREE.Mesh(geom,mat)
+    var geom=new THREE.CubeGeometry(1000,1000,1000,1,1,1)
+    var mat=new Physijs.createMaterial(
+        new THREE.MeshPhongMaterial({
+            color:Colors.blue,
+            transparent:true,
+            opacity:.6,
+            shading:THREE.FlatShading
+        })
+
+    )
+    this.mesh=new Physijs.BoxMesh(geom,mat,0)
     this.mesh.receiveShadow=true
 }
 
