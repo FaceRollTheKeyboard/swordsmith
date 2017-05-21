@@ -4,7 +4,7 @@
 var playerAndSword=function () {
     this.mesh=new THREE.Object3D()
 
-    this.mass=1
+    this.mass=.5
 
     //创建身体
     var geomBody=new THREE.CubeGeometry(10,10,10)
@@ -15,7 +15,7 @@ var playerAndSword=function () {
 
         }),
         0.5,
-        1
+        .5
     )
 
     this.mesh=new Physijs.BoxMesh(geomBody,matBody,this.mass)
@@ -43,7 +43,7 @@ var playerAndSword=function () {
             fz=-k*nowV.z
             fx=-k*nowV.x
 
-        }else  if(Math.abs($x)<5&&Math.abs($z)<5){
+        }else  if(Math.abs($x)<2&&Math.abs($z)<2){
             fz=-k*nowV.z
             fx=-k*nowV.x
             this.moveTarget={x:"",y:"",z:""}
@@ -51,7 +51,7 @@ var playerAndSword=function () {
             //根据target的坐标计算出力方向
             x$z=$x/$z
             fz=Math.sqrt(Math.pow(this.movePower,2)/(Math.pow(x$z,2)+1))*($z/Math.abs($z))-k*nowV.z
-            fx=Math.abs(fz*x$z)*($x/Math.abs($x))-k*nowV.x
+            fx=Math.sqrt(Math.pow(this.movePower,2)/(Math.pow(1/x$z,2)+1))*($x/Math.abs($x))-k*nowV.x
         }
 
 
