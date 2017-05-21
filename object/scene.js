@@ -17,7 +17,7 @@ function createScene() {
     scene = new Physijs.Scene({ fixedTimeStep: fixedTimeStep });
 
     //设置场景重力
-    scene.setGravity(new THREE.Vector3(0,-1000,0))
+    scene.setGravity(new THREE.Vector3(0,-100,0))
 
     // 在场景中添加雾的效果；样式上使用和背景一样的颜色
     scene.fog = new THREE.Fog(0xf7d9aa, 100, 950);

@@ -30,7 +30,7 @@ var playerAndSword=function () {
         y:"",
         z:"",
     }
-    this.movePower=1000
+    this.movePower=500
     this.move=function () {
         var $x,$z,nowV,x$z,fz,fx,$vz,$vx
         $x=this.moveTarget.x-this.mesh.position.x
