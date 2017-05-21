@@ -83,22 +83,19 @@
     }
 
     function loop(){
-//        sea.mesh.rotation.z += .005;
-//        sky.mesh.rotation.z += .01;
-//
-//        // 更新每帧的飞机
-//        updatePlane();
-//        airplane.pilot.updateHairs();
-//
+
+
+        player.move()
 
         scene.simulate();
-        camera.position.x=player.mesh.position.x
-        camera.position.z=player.mesh.position.z+200
-        camera.lookAt({
-            x:player.mesh.position.x,
-            y:player.mesh.position.y,
-            z:player.mesh.position.z+20
-        })
+//        camera.position.x=player.mesh.position.x
+//        camera.position.z=player.mesh.position.z+200
+//        camera.lookAt({
+//            x:player.mesh.position.x,
+//            y:player.mesh.position.y,
+//            z:player.mesh.position.z+20
+//        })
+        camera.lookAt(scene.position)
         renderer.render(scene, camera);
         render_stats.update()
         physics_stats.update();
@@ -136,16 +133,8 @@
     // mousemove 事件处理函数
 
     function handleMouseMove(e) {
-
-
-
-    }
-
-    var raycaster=new THREE.Raycaster();
-    var mouse=new THREE.Vector2();
-    function handleMouseClick(e) {
-        //获取目标位置
-        console.log(e)
+//获取目标位置
+//        console.log(e)
         //将鼠标点击位置的屏幕坐标转成threejs中的标准坐标
         mouse.x = (e.clientX/window.innerWidth)*2 -1;
         mouse.y = -(e.clientY/window.innerHeight)*2 + 1;
@@ -156,10 +145,22 @@
 
         ForEach(intersects,function (el, i) {
             if(el.object.name='ground'){
-                console.log(el)
+//                console.log(el)
                 target.mesh.position.set(el.point.x,el.point.y,el.point.z)
             }
         })
+    }
+
+    var raycaster=new THREE.Raycaster();
+    var mouse=new THREE.Vector2();
+
+    //点击移动
+    function handleMouseClick(e) {
+        player.moveTarget={
+            x:target.mesh.position.x,
+            y:0,
+            z:target.mesh.position.z,
+        }
     }
 
     //遍历数组和对象
