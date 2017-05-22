@@ -4,6 +4,7 @@
 var playerAndSword=function () {
     this.mesh=new THREE.Object3D()
 
+    //建议范围 0~1
     this.mass=.5
 
     //创建身体
