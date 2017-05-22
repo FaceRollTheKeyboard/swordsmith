@@ -43,7 +43,7 @@ var playerAndSword=function () {
             fz=-k*nowV.z
             fx=-k*nowV.x
 
-        }else  if(Math.abs($x)<2&&Math.abs($z)<2){
+        }else  if(Math.abs($x)<1||Math.abs($z)<1){
             fz=-k*nowV.z
             fx=-k*nowV.x
             this.moveTarget={x:"",y:"",z:""}
