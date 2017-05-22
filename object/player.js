@@ -66,6 +66,8 @@ var playerAndSword=function () {
             z:nowV.z+$vz
         })
     }
+
+    //冲锋动作
     this.charge=function () {
         this.moveTarget={
             x:target.mesh.position.x,
@@ -78,6 +80,7 @@ var playerAndSword=function () {
         },50)
     }
 
+    //冲锋操作 按下空格键
     document.addEventListener('keypress',function (e) {
         console.log(e)
         if(e.keyCode==32){
