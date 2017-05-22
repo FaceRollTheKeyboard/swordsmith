@@ -4,10 +4,11 @@
 var playerAndSword=function () {
     this.mesh=new THREE.Object3D()
 
-    //建议范围 0~1
+    //建议范围 0.1~1
     this.mass=.5
 
     //创建身体
+
     var geomBody=new THREE.CubeGeometry(10,10,10)
     var matBody=new Physijs.createMaterial(
         new THREE.MeshPhongMaterial({
@@ -44,11 +45,15 @@ var playerAndSword=function () {
             fz=-k*nowV.z
             fx=-k*nowV.x
 
+            //设置摩擦力为静摩擦力
+            this.mesh.material._physijs.friction=1
         }else  if(Math.abs($x)<1||Math.abs($z)<1){
             fz=-k*nowV.z
             fx=-k*nowV.x
             this.moveTarget={x:"",y:"",z:""}
         }else{
+            //设置摩擦力为动摩擦力
+            this.mesh.material._physijs.friction=0.2
             //根据target的坐标计算出力方向
             x$z=$x/$z
             fz=Math.sqrt(Math.pow(this.movePower,2)/(Math.pow(x$z,2)+1))*($z/Math.abs($z))-k*nowV.z
@@ -88,6 +93,17 @@ var playerAndSword=function () {
             player.charge()
         }
     },false)
+
+    //急停动作
+    this.stop=function () {
+        this.moveTarget={x:"",y:"",z:""}
+    }
+    document.addEventListener('keypress',function (e) {
+        console.log(e)
+        if(e.keyCode==115){
+            player.stop()
+        }
+    })
 }
 
 var player;
