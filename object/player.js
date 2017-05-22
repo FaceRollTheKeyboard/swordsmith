@@ -62,11 +62,28 @@ var playerAndSword=function () {
         //结合当前速度计算出最终速度
         this.mesh.setLinearVelocity({
             x:nowV.x+$vx,
-            y:1,
+            y:nowV.y,
             z:nowV.z+$vz
         })
-
     }
+    this.charge=function () {
+        this.moveTarget={
+            x:target.mesh.position.x,
+            y:'',
+            z:target.mesh.position.z
+        }
+        this.movePower=10000
+        setTimeout(function () {
+            player.movePower=500
+        },50)
+    }
+
+    document.addEventListener('keypress',function (e) {
+        console.log(e)
+        if(e.keyCode==32){
+            player.charge()
+        }
+    },false)
 }
 
 var player;

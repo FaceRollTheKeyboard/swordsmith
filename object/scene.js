@@ -53,7 +53,8 @@ function createScene() {
     camera.position.x = 0;
     camera.position.z = 200;
     camera.position.y = 200;
-    // camera.lookAt(player)
+    camera.lookAt(scene.position)
+
 
     // 创建渲染器
     renderer = new THREE.WebGLRenderer({
@@ -108,16 +109,16 @@ function createLights() {
     shadowLight.castShadow = true;
 
     // 定义可见域的投射阴影
-    shadowLight.shadow.camera.left = -400;
-    shadowLight.shadow.camera.right = 400;
-    shadowLight.shadow.camera.top = 400;
-    shadowLight.shadow.camera.bottom = -400;
+    shadowLight.shadow.camera.left = -500;
+    shadowLight.shadow.camera.right = 500;
+    shadowLight.shadow.camera.top = 500;
+    shadowLight.shadow.camera.bottom = -500;
     shadowLight.shadow.camera.near = 1;
     shadowLight.shadow.camera.far = 1000;
 
     // 定义阴影的分辨率；虽然分辨率越高越好，但是需要付出更加昂贵的代价维持高性能的表现。
-    shadowLight.shadow.mapSize.width = 2048;
-    shadowLight.shadow.mapSize.height = 2048;
+    shadowLight.shadow.mapSize.width = 1024;
+    shadowLight.shadow.mapSize.height = 1024;
 
     // 为了使这些光源呈现效果，只需要将它们添加到场景中
     scene.add(hemisphereLight);
